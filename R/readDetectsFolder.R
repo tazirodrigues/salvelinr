@@ -1,3 +1,15 @@
+#' @title readDetectsFolder
+#'
+#' @description Reads in .csv files from a single folder and compiles them into one long data frame
+#'
+#' @param foldername Path to the folder containing .csv files
+#'
+#' @return A data frame comprised of all the .csv files bound together
+#' @examples
+#' vr2_detects <- readDetectsFolder("C:/Users/janefish/Field Data/VR2 Download 20250814/csv files")
+#' @export
+#' @importFrom
+
 readDetectsFolder <- function(foldername) {
 
   setwd(foldername)

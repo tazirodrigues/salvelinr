@@ -1,4 +1,23 @@
-seasons <- function(df, date_col = "Date_LT",
+#' @title season
+#'
+#' @description Assign seasons to detection data based on first-day thresholds
+#'
+#' @param df A data frame object with detections
+#' @param date_col The name (in quotes) of the column that contains dates. Defaults to "Date_LT"
+#' @param type One of "ice" or "month." If "ice," supply a vector of dates; if "month," supply a vector of numeric values corresponding to months.
+#' @param firstdays Vector of first days corresponding to each season.
+#' @param hemisphere Defaults to "north" - specify as "south" to flip the order of the seasons.
+#'
+#' @return Adds a "Season" column to the original data frame supplied.
+#' @examples
+#' matched_detects <- season(matched_detects, date_col = "Date_LT", type = "ice",
+#' firstdays = c("2025-03-14", "2025-05-25", "2025-10-02", "2025-11-14"), hemisphere = "north")
+#' @export
+#' @importFrom dplyr "%>%"
+#' dplyr "mutate"
+#' dplyr "case_when"
+
+season <- function(df, date_col = "Date_LT",
                     type = "ice", firstdays,
                     hemisphere = "north") {
 
