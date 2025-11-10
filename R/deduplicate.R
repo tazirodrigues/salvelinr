@@ -1,3 +1,19 @@
+#' @title deduplicate
+#'
+#' @description Removes duplicate detections from receiver data.
+#'
+#' @param df A data frame containing receiver detections
+#' @param fish_col The name (in quotes) of the column that contains individual animal IDs
+#' @param time_col The name (in quotes) of the column that contains date-times
+#' @param threshold Value for how far apart detections must be to be considered *not* duplicates
+#' @param type One of either "hammer," which will just hammer out all detections within the interval, or "spear," which will do so in a step-wise way to conserve as many detections as possible given the threshold.
+#'
+#' @return A data frame with only detections that meet the threshold for inclusion
+#' @examples
+#' deduplicated_vr2 <- deduplicate(vr2, fish_col = "FishID", time_col = "DateTime_LT", threshold = 60, type = "hammer)
+#' @export
+#' @importFrom svMisc "progress"
+
 deduplicate <- function(df, fish_col = "FishID", time_col = "DateTime_LT", threshold = 60, type = "hammer") {
 
     new_df <- data.frame()
