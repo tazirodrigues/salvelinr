@@ -1,6 +1,21 @@
-interpolate.date <- function(df, var = "Temp", interval = "day") {
+#' @title interpolateDates
+#'
+#' @description Interpolates temperature data to populate missing dates
+#'
+#' @param df A data frame object. Currently, must contain a date column and a depth column.
+#' @param date_col Name (in quotes) of the column with dates in the data frame.
+#' @param var Variable of interest. Defaults to "Temp"
+#' @param interval Temporal resolution of interpolated data frame. Defaults to "day"
+#'
+#' @return Interpolated data for the variable of interest.
+#' @examples
+#' interpolated_temps <- interpolateDates(temp_profiles, date_col = "Date_LT", interval = "day")
+#' @export
+#' @importFrom zoo "na.approx"
 
-  df$Date <- as.Date(df$Date, "%Y-%m-%d")
+interpolateDates <- function(df, date_col, var = "Temp", interval = "day") {
+
+  df$Date <- as.Date(df[[date_col]], "%Y-%m-%d")
 
   all_dates <- data.frame(Date = seq.Date(min(df$Date),
                                           max(df$Date), interval))
