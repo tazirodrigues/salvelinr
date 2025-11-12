@@ -1,8 +1,8 @@
 # salvelinr 
 
-This package is a collection of accumulated functions I've written and reused over the past few years of working with positional telemetry data, particularly on charr (hence the name) in small boreal lakes. I am actively working on making it better and more transferrable, so I anticipate that there will be problems to solve with the functions as they are. I'm working on packaging them up so they can easily be used by other lab members. Below, I have given an overview of a sample workflow and flagged functions that I would *not* currently recommend using - but which may be ready soon!
+*Note! This is a package written by a biologist (i.e., not a programmer) for herself and collaborators. For other applications, use at your own risk!*
 
-*Important disclaimer: I am not a programmer, and these are not elegant, but hopefully they are helpful nonetheless!*
+This package is a collection of accumulated functions I've written and reused over the past few years of working with positional telemetry data, particularly on charr (hence the name) in small boreal lakes. I am actively working on making it better and more transferrable, so I anticipate that there will be problems to solve with the functions as they are. I'm working on packaging them up so they can easily be used by other lab members. Below, I have given an overview of a sample workflow and flagged functions that I would *not* currently recommend using - but which may be ready soon!
 
 ## Example workflow
 ### Step 1: 
