@@ -20,3 +20,9 @@ It's very likely that these detections are in UTC time, but to make them meaning
 - `sundial` essentially runs `suncalc::getSunlightTimes`, but with the added twist that it will then add a column to indicate whether each instance is during the day, early night, or late night according to Cruz-Font et al.
 
 There is also the function `crepuscule` which is not likely to be very useful, and needs some work anyway. It finds the first and last detection each night and was written for a project where the fish disappeared during the day. 
+
+### Step 3: 
+You may have temperature data to work with as well. These functions **have been informally tested** recently and used in multiple projects. They are quite useful! You will need to load "tidyverse," "zoo," and "reshape2" to use them.
+
+- `interpolateDepths` should be used first, if both are to be used. It will linearly interpolate down each day's profile to fill in missing values at the given interval. I use this to get temps for every 0.1 m from meter-wise depth profiles. If you write `sinkends == TRUE` it will always give you a value for the very top and bottom of the lake, even if there are no data to support it.
+- `interpolateDates` can be used next. It does the same thing, but along the date axis - linearly interpolates to fill in the values. 
