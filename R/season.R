@@ -32,46 +32,79 @@ season <- function(df, date_col = "Date_LT",
 
   }
 
-  firstdays <- sort(firstdays)
+  if(length(firstdays[[1]]) %% 4 != 0) { stop("The length of 'firstdays' vector must be a multiple of 4.") }
 
-  ## ice firstdays
+  if(length(firstdays[[1]]) == 4 | type == "month") {
 
-  if(type == "ice") {
+   firstdays <- sort(firstdays)
 
-    df$Season = ifelse(df[[date_col]] >= firstdays[1] & df[[date_col]] < firstdays[2], "Spring",
+    if(type == "ice") {
+
+      df$Season = ifelse(df[[date_col]] >= firstdays[1] & df[[date_col]] < firstdays[2], "Spring",
                        ifelse(df[[date_col]] >= firstdays[2] & df[[date_col]] < firstdays[3], "Summer",
                               ifelse(df[[date_col]] >= firstdays[3] & df[[date_col]] < firstdays[4], "Fall",
                                      "Winter")))
 
-  }
+    }
 
-  ## month firstdays
+    else {
 
-  if(type == "month") {
+     if(hemisphere == "north") {
 
-    if(hemisphere == "north") {
-
-      df <- df %>% mutate(Month = as.numeric(format(df[[date_col]], "%m")),
+        df <- df %>% mutate(Month = as.numeric(format(df[[date_col]], "%m")),
                           Season = case_when(Month >= firstdays[1] & Month < firstdays[2] ~ "Spring",
                                              Month >= firstdays[2] & Month < firstdays[3] ~ "Summer",
                                              Month >= firstdays[3] & Month < firstdays[4] ~ "Fall",
-                                             TRUE ~ "Summer"))
+                                             TRUE ~ "Winter"))
+      }
 
+      if(hemisphere == "south") {
 
-    }
-
-    if(hemisphere == "south") {
-
-      df <- df %>% mutate(Month = as.numeric(format(df[[date_col]], "%m")),
+        df <- df %>% mutate(Month = as.numeric(format(df[[date_col]], "%m")),
                           Season = case_when(Month >= firstdays[1] & Month < firstdays[2] ~ "Fall",
                                              Month >= firstdays[2] & Month < firstdays[3] ~ "Winter",
                                              Month >= firstdays[3] & Month < firstdays[4] ~ "Spring",
                                              TRUE ~ "Summer"))
+      }
 
     }
 
-  }
-
   return(df)
+
+  } else { ## what to do if we have multiple years of data - currently this actually will not work. what??
+
+    ## I think I want to have the first days and then pivot it so I have wide data with the first day of each season
+    ## then merge and select, and then get rid of the rest of the columns
+
+    yearly <- as.data.frame(firstdays); yearly$Year <- as.numeric(format(yearly$firstdays, "%Y"))
+    yearly <- dplyr::arrange(yearly, firstdays)
+
+    if(hemisphere == "north") {yearly$Season <- rep(c("Spring", "Summer", "Fall", "Winter"), times = length(unique(yearly$Year)))} else
+      if (hemisphere == "south") {yearly$Season <- rep(c("Autumn", "Winter", "Spring", "Summer"), times = length(unique(yearly$Year)))
+      }
+
+    yearly <- yearly %>% pivot_wider(names_from = Season, values_from = firstdays)
+
+    df$Year <- format(df[[date_col]], "%Y")
+    df <- merge(df, yearly, by = "Year", all.x = TRUE)
+
+    if(hemisphere == "north") {
+
+    df$Season <- ifelse(df[[date_col]] >= df$Spring & df[[date_col]] < df$Summer, "Spring",
+                        ifelse(df[[date_col]] >= df$Summer & df[[date_col]] < df$Fall, "Summer",
+                               ifelse(df[[date_col]] >= df$Fall & df[[date_col]] < df$Winter, "Fall",
+                                      "Winter"))) }
+
+    if(hemisphere == "south") {
+
+      df$Season <- ifelse(df[[date_col]] >= df$Fall & df[[date_col]] < df$Winter, "Fall",
+                          ifelse(df[[date_col]] >= df$Winter & df[[date_col]] < df$Spring, "Winter",
+                                 ifelse(df[[date_col]] >= df$Spring & df[[date_col]] < df$Summer, "Spring",
+                                        "Summer"))) }
+
+    }
+
+    df$Summer <- NULL; df$Winter <- NULL; df$Fall <- NULL; df$Spring <- NULL
+    return(df)
 
 }
