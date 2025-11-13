@@ -21,8 +21,6 @@ It's very likely that these detections are in UTC time, but to make them meaning
 - `season` requires a vector of the first days of seasons. **This function assumes a four-season paradigm.** If type == "ice" it will assign based on dates, and if type == "month" it will assign based on months. The hemisphere argument defaults to "north," but specifying hemisphere = "south" will flip the seasonal order (and change the label "fall" to "autumn").
 - `sundial` essentially runs `suncalc::getSunlightTimes`, but with the added twist that it will then add a column to indicate whether each instance is during the day, early night, or late night according to Cruz-Font et al. 2019.
 
-There is also the function `crepuscule` which is not likely to be very useful, and needs some work anyway. It finds the first and last detection each night and was written for a project where the fish disappeared during the day. 
-
 ### Step 3: 
 You may have temperature data to work with as well, which may need to be interpolated. You will need to load "zoo" and "reshape2" to use the functions below.
 
