@@ -16,11 +16,19 @@ keepFish <- function(df, fish_col, fishnames) {
 
   if(class(df[[fish_col]]) != class(fishnames)) { stop("Both fish lists must be of the same class.") }
 
-  notfound <- base::setdiff(df[[fish_col]], fishnames)
-  df <- filter(df, df[[fish_col]] %in% fishnames)
+  notmatched <- df[[fish_col]][!(df[[fish_col]] %in% fishnames)]
+  notfound <- fishnames[!(fishnames %in% df[[fish_col]])]
+
+  df <- dplyr::filter(df, df[[fish_col]] %in% fishnames)
 
   if(length(notfound) > 0) {
-    print(paste("The following IDs were not matched:", notfound, sep = " "))}
+    print("The following IDs had metadata listed but were not detected:")
+    print(notfound)}
+
+  if(length(notmatched) > 0) {
+    print("The following IDs were present in the data but REMOVED due to lack of metadata:")
+    print(notmatched)}
+
   return(df)
 
 }
