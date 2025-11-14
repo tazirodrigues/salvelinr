@@ -4,7 +4,7 @@
 
 **To install this package, run `remotes::install_github("tazirodrigues/salvelinr")`.**
 
-**`salvelinr`** is a collection of accumulated functions I've written and reused over the past few years of working with positional telemetry data, particularly on charr (hence the name) in small boreal lakes. I am actively making them better and more transferrable, so I anticipate that there will be problems to solve with the functions as they are. The main motivation for packaging them up is so that they can easily be used by other lab members (and me as I move between projects). Below, I give an overview of a sample workflow that I anticipate someone working through after receiving VR2 files and temperature strings. 
+**`salvelinr`** is a collection of accumulated functions I've written and reused over the past few years of working with positional telemetry data, particularly on charr (hence the name) in small boreal lakes. The main motivation for packaging them up is so that they can easily be used by other lab members (and me as I move between projects). Below, I give an overview of a sample workflow that I anticipate someone working through after receiving VR2 files and temperature strings. 
 
 ## Example workflow
 ### Step 1: 
