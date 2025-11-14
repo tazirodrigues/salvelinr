@@ -31,8 +31,12 @@ season <- function(df, date_col = "Date_LT",
     df[[date_col]] <- as.Date(df[[date_col]], "%Y-%m-%d")
     print("Dates have been converted assuming the convention %Y-%m-%d.")}
 
-  if (length(firstdays[[1]]) %% 4 != 0) {
+  if (length(firstdays) %% 4 != 0) {
     stop("The length of 'firstdays' vector must be a multiple of 4.")}
+
+  if (class(firstdays) != class(df[[date_col]])) {
+    stop("Season thresholds must match class of given dates.")
+  }
 
   ## into the function
 
@@ -72,9 +76,9 @@ season <- function(df, date_col = "Date_LT",
       yearly$Season <- rep(c("Autumn", "Winter", "Spring", "Summer"), times = length(unique(yearly$Year)))
     }
 
-    yearly <- yearly %>% pivot_wider(names_from = Season, values_from = firstdays)
+    yearly <- yearly %>% tidyr::pivot_wider(names_from = Season, values_from = firstdays)
 
-    df$Year <- format(df[[date_col]], "%Y")
+    df$Year <- as.numeric(format(df[[date_col]], "%Y"))
     df <- merge(df, yearly, by = "Year", all.x = TRUE)
 
     if (hemisphere == "north") {
@@ -85,7 +89,7 @@ season <- function(df, date_col = "Date_LT",
     }
 
     if (hemisphere == "south") {
-      df$Season <- ifelse(df[[date_col]] >= df$Fall & df[[date_col]] < df$Winter, "Autumn",
+      df$Season <- ifelse(df[[date_col]] >= df$Autumn & df[[date_col]] < df$Winter, "Autumn",
         ifelse(df[[date_col]] >= df$Winter & df[[date_col]] < df$Spring, "Winter",
           ifelse(df[[date_col]] >= df$Spring & df[[date_col]] < df$Summer, "Spring",
             "Summer")))
