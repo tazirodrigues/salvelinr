@@ -12,7 +12,7 @@
 #' @export
 #' @importFrom
 
-correctTimes <- function(df, time_col = "DateTime_UTC", tz_offset) {
+timezone <- function(df, time_col = "DateTime_UTC", tz_offset) {
 
   if("POSIXct" %in% class(df[[time_col]]) == FALSE) { stop ("Please ensure datetime objects are formatted as POSIX before continuing. **DID NOT RUN**") }
 
