@@ -6,7 +6,7 @@ Authors@R: person("Tazi", "Rodrigues", , "21ethr@queensu.ca", role = c("aut", "c
 Maintainer: Tazi Rodrigues <21ethr@queensu.ca>
 Description: Package of functions to standardize routine tasks to be performed with positional acoustic telemetry data, particularly with fishes. Incidentally includes functions for related tasks, such as building thermal lake profiles.
 License: What license is it under?
-Imports: dplyr, ggplot2, zoo, reshape2, lubridate, tidyr
+Imports: dplyr, ggplot2, zoo, reshape2, lubridate, tidyr, purrr
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.3
