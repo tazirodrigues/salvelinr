@@ -28,10 +28,12 @@ sundial <- function(df, date_col, time_col,
 
   if ("sunrise" %in% names(df)) { stop ("Sunrises have already been assigned, so this function did not run.")}
 
+  if(abs(latitude) > 90 | abs(longitude) > 180) { stop("Please supply lat/long values in decimal degrees.")}
+
   setrise <- suncalc::getSunlightTimes(date = seq(from = mindate, to = maxdate, by = "day"),
                                         lat = latitude, lon = longitude, tz = timezone) %>%
-    select(c("date", "sunrise", "sunset")) %>%
-    mutate(sunrise = gsub(".* ", "", sunrise),
+    dplyr::select(c("date", "sunrise", "sunset")) %>%
+    dplyr::mutate(sunrise = gsub(".* ", "", sunrise),
            sunset = gsub(".* ", "", sunset))
 
   if (length(class(df)) > 1) { stop ("Look into the class of your data frame. Are there groups in there?")}
@@ -39,7 +41,7 @@ sundial <- function(df, date_col, time_col,
                                          ** DID NOT EXECUTE **")}
 
   df <- merge(df, setrise, by.x = date_col, by.y = "date", all = TRUE)
-  df <- df %>% mutate(sunrise = lubridate::hms(sunrise),
+  df <- df %>% dplyr::mutate(sunrise = lubridate::hms(sunrise),
                       sunset = lubridate::hms(sunset),
                       suntime = lubridate::hms(df[[time_col]]))
 
@@ -48,7 +50,7 @@ sundial <- function(df, date_col, time_col,
                                 ifelse(df$suntime > lubridate::hms("12:00:00"), "N2",
                                        NA))) ## this is here to catch issues
 
-  df <- filter(df, is.na(df[[time_col]]) == FALSE) ## in case the dates we were given are non-continuous
+  df <- dplyr::filter(df, is.na(df[[time_col]]) == FALSE) ## in case the dates we were given are non-continuous
 
   return(df)
 
