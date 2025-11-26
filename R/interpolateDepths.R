@@ -8,7 +8,7 @@
 #' @param var Variable of interest. Defaults to "Temp"
 #' @param min Minimum depth up to which to interpolate
 #' @param max Maximum depth down to which to interpolate
-#' @param interval Temporal resolution of interpolated data frame. Defaults to "day"
+#' @param interval Resolution (in metres) of interpolated data frame.
 #' @param sinkends Boolean value related to whether data should be "sunk" to min and max values even if there are no measured values on which to base the interpolation.
 #'
 #' @return Interpolated data for the variable of interest.
@@ -21,9 +21,8 @@
 
 interpolateDepths <- function(df, var = "Temp", date_col, depth_col, min, max, interval, sinkends = FALSE) {
 
-  if (class(df[[var]]) != "numeric") { stop ("Please give me a number!") }
-  if (class(df[[depth_col]]) != "numeric") { stop ("Depths must be numeric") }
-  if (class(df[[date_col]]) != "Date") { stop ("Please specify dates as class Date") }
+  if (class(df[[var]]) != "numeric") { stop("Please give me a number!") }
+  if (class(df[[depth_col]]) != "numeric") { stop("Depths must be numeric") }
 
   depth_df <- as.data.frame(seq(min, max, by = interval))
   names(depth_df) <- depth_col
