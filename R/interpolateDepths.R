@@ -3,7 +3,7 @@
 #' @description Interpolates temperature data to populate missing depths at the date values for which data exist.
 #'
 #' @param df A data frame object
-#' @param date_col Name (in quotes) of the column with dates in the data frame.
+#' @param time_col Name (in quotes) of the time column in the data frame. Must be POSIX.
 #' @param depth_col Name (in quotes) of the column with depths
 #' @param var Variable of interest. Defaults to "Temp"
 #' @param min Minimum depth up to which to interpolate
@@ -13,15 +13,17 @@
 #'
 #' @return Interpolated data for the variable of interest.
 #' @examples
-#' interpolated_temps <- interpolateDepths(temp_profiles, date_col = "Date_LT", depth_col = "Depths", var = "Temp",
+#' interpolated_temps <- interpolateDepths(temp_profiles, time_col = "Date_LT", depth_col = "Depths", var = "Temp",
 #'  interval = 0.1, min = 0, max = 15, sinkends = TRUE)
 #' @export
 #' @importFrom zoo "na.approx"
 #' reshape2 "dcast"
 
-interpolateDepths <- function(df, var = "Temp", date_col, depth_col, min, max, interval, sinkends = FALSE) {
+interpolateDepths <- function(df, var = "Temp", time_col, depth_col,
+                              min, max, interval, pos_con = "%Y-%m-%d",
+                              sinkends = FALSE) {
 
-  if (class(df[[var]]) != "numeric") { stop("Please give me a number!") }
+  if (class(df[[var]]) != "numeric") { stop("Variable of interest must be numeric") }
   if (class(df[[depth_col]]) != "numeric") { stop("Depths must be numeric") }
 
   depth_df <- as.data.frame(seq(min, max, by = interval))
@@ -29,7 +31,7 @@ interpolateDepths <- function(df, var = "Temp", date_col, depth_col, min, max, i
 
   # go to the data we have
 
-  df <- reshape2::dcast(df[, c(date_col, depth_col, var)], df[[depth_col]] ~ df[[date_col]], mean)
+  df <- reshape2::dcast(df[, c(time_col, depth_col, var)], df[[depth_col]] ~ df[[time_col]], mean)
   names(df)[names(df) == "df[[depth_col]]"] <- depth_col
 
   df <- merge(df, depth_df, by = depth_col, all = TRUE)
@@ -44,8 +46,8 @@ interpolateDepths <- function(df, var = "Temp", date_col, depth_col, min, max, i
 
   df <- zoo::na.approx(df); df <- as.data.frame(df)
   df <- reshape2::melt(df, id.vars = depth_col)
-  names(df) <- c(depth_col, date_col, var)
-  df[[date_col]] <- as.Date(df[[date_col]])
+  names(df) <- c(depth_col, time_col, var)
+  df[[time_col]] <- as.POSIXct(df[[time_col]], pos_con)
 
   return(df)
 
