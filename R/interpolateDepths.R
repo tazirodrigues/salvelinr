@@ -9,6 +9,7 @@
 #' @param min Minimum depth up to which to interpolate
 #' @param max Maximum depth down to which to interpolate
 #' @param interval Resolution (in metres) of interpolated data frame.
+#' @param pos.con Configuration of POSIX object. Defaults to "%Y-%m-%d"
 #' @param sinkends Boolean value related to whether data should be "sunk" to min and max values even if there are no measured values on which to base the interpolation.
 #'
 #' @return Interpolated data for the variable of interest.
@@ -20,7 +21,7 @@
 #' reshape2 "dcast"
 
 interpolateDepths <- function(df, var = "Temp", time_col, depth_col,
-                              min, max, interval, pos_con = "%Y-%m-%d",
+                              min, max, interval, pos.con = "%Y-%m-%d",
                               sinkends = FALSE) {
 
   if (class(df[[var]]) != "numeric") { stop("Variable of interest must be numeric") }
@@ -47,7 +48,7 @@ interpolateDepths <- function(df, var = "Temp", time_col, depth_col,
   df <- zoo::na.approx(df); df <- as.data.frame(df)
   df <- reshape2::melt(df, id.vars = depth_col)
   names(df) <- c(depth_col, time_col, var)
-  df[[time_col]] <- as.POSIXct(df[[time_col]], pos_con)
+  df[[time_col]] <- as.POSIXct(df[[time_col]], pos.con)
 
   return(df)
 
