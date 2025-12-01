@@ -3,10 +3,11 @@
 #' @description Interpolates temperature data to populate missing dates at the depth values for which data exist.
 #'
 #' @param df A data frame object. Currently, must contain a date column and a depth column.
-#' @param time_col Name (in quotes) of the time column in the data frame. Must be POSIX.
+#' @param time_col Name (in quotes) of the time column in the data frame. Should be POSIX (see supplied.date if not).
 #' @param depth_col Name (in quotes) of the column with depths
 #' @param var Variable of interest. Defaults to "Temp"
 #' @param interval Temporal resolution of interpolated data frame. Defaults to "day"
+#' @param supplied.date Whether to convert time_col to POSIX. Set to TRUE when time_col is supplied as a Date ("%Y-%m-%d"). Defaults to FALSE.
 #'
 #' @return Interpolated data for the variable of interest.
 #' @examples
@@ -15,7 +16,10 @@
 #' @importFrom zoo "na.approx"
 #' reshape2 "dcast"
 
-interpolateDates <- function(df, time_col, depth_col, var = "Temp", interval = "day") {
+interpolateDates <- function(df, time_col, depth_col, var = "Temp", interval = "day",
+                             supplied.date = FALSE) {
+
+  if(supplied.date == TRUE) { df[[time_col]] <- as.POSIXct(df[[time_col]], "%Y-%m-%d") }
 
   all_dates <- data.frame(Date = seq.POSIXt(min(df[[time_col]]),
                                           max(df[[time_col]]), interval))
