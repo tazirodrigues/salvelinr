@@ -21,7 +21,12 @@ It's very likely that these detections are in UTC time, but to make them meaning
 - `season` requires a vector of the first days of seasons. *This function assumes a four-season paradigm.* If `type == "ice"` it will assign based on dates, and if `type == "month"` it will assign based on months. The hemisphere argument defaults to "north," but specifying `hemisphere = "south"` will flip the seasonal order (and change the label "fall" to "autumn").
 - `sundial` essentially runs `suncalc::getSunlightTimes`, but with the added twist that it will then add a column to indicate whether each instance is during the day, early night, or late night according to Cruz-Font et al. 2019.
 
-### Step 3: 
+### Step 3:
+At this point you likely want to take a quick look at the data. These functions are related to data examination:
+
+- `diagnose` creates a patchwork plot of number of detections over time, including number of fish over time. If `sensor == TRUE` it will include plots of mean sensor values and number of sensor readings - be sure to specify which column has the sensor types if working with two or more of them.
+
+### Environmental Data: 
 You may have temperature data to work with as well. The following functions will linearly interpolate them along depth and date axes.
 
 - `interpolateDepths` should be used first, if both are to be used. It will linearly interpolate down each day's profile to fill in missing values at the given interval. I use this to get temps for every 0.1 m from meter-wise depth profiles. If you write `sinkends == TRUE` it will always give you a value for the very top and bottom of the lake, even if there are no data to support it.
