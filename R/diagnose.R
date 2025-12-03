@@ -14,7 +14,7 @@
 #' @export
 #' @importFrom
 
-diagnose <- function(df, time_col = "DateTime_LT", fish_col, sensors = FALSE, sensor_col = NA, sensor_vals = NA) {
+diagnose <- function(df, time_col = DateTime_LT, fish_col, sensors = FALSE, sensor_col = NA, sensor_vals = NA) {
 
   ## number of fish per day
 
