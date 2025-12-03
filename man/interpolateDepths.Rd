@@ -7,11 +7,12 @@
 interpolateDepths(
   df,
   var = "Temp",
-  date_col,
+  time_col,
   depth_col,
   min,
   max,
   interval,
+  pos.con = "\%Y-\%m-\%d",
   sinkends = FALSE
 )
 }
@@ -20,7 +21,7 @@ interpolateDepths(
 
 \item{var}{Variable of interest. Defaults to "Temp"}
 
-\item{date_col}{Name (in quotes) of the column with dates in the data frame.}
+\item{time_col}{Name (in quotes) of the time column in the data frame. Must be POSIX.}
 
 \item{depth_col}{Name (in quotes) of the column with depths}
 
@@ -28,7 +29,9 @@ interpolateDepths(
 
 \item{max}{Maximum depth down to which to interpolate}
 
-\item{interval}{Temporal resolution of interpolated data frame. Defaults to "day"}
+\item{interval}{Resolution (in metres) of interpolated data frame.}
+
+\item{pos.con}{Configuration of POSIX object. Defaults to "%Y-%m-%d"}
 
 \item{sinkends}{Boolean value related to whether data should be "sunk" to min and max values even if there are no measured values on which to base the interpolation.}
 }
@@ -39,6 +42,6 @@ Interpolated data for the variable of interest.
 Interpolates temperature data to populate missing depths at the date values for which data exist.
 }
 \examples{
-interpolated_temps <- interpolateDepths(temp_profiles, date_col = "Date_LT", depth_col = "Depths", var = "Temp",
+interpolated_temps <- interpolateDepths(temp_profiles, time_col = "Date_LT", depth_col = "Depths", var = "Temp",
  interval = 0.1, min = 0, max = 15, sinkends = TRUE)
 }

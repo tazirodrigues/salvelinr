@@ -4,18 +4,27 @@
 \alias{interpolateDates}
 \title{interpolateDates}
 \usage{
-interpolateDates(df, date_col, depth_col, var = "Temp", interval = "day")
+interpolateDates(
+  df,
+  time_col,
+  depth_col,
+  var = "Temp",
+  interval = "day",
+  supplied.date = FALSE
+)
 }
 \arguments{
 \item{df}{A data frame object. Currently, must contain a date column and a depth column.}
 
-\item{date_col}{Name (in quotes) of the column with dates in the data frame.}
+\item{time_col}{Name (in quotes) of the time column in the data frame. Should be POSIX (see supplied.date if not).}
 
 \item{depth_col}{Name (in quotes) of the column with depths}
 
 \item{var}{Variable of interest. Defaults to "Temp"}
 
 \item{interval}{Temporal resolution of interpolated data frame. Defaults to "day"}
+
+\item{supplied.date}{Whether to convert time_col to POSIX. Set to TRUE when time_col is supplied as a Date ("%Y-%m-%d"). Defaults to FALSE.}
 }
 \value{
 Interpolated data for the variable of interest.
@@ -24,5 +33,5 @@ Interpolated data for the variable of interest.
 Interpolates temperature data to populate missing dates at the depth values for which data exist.
 }
 \examples{
-interpolated_temps <- interpolateDates(temp_profiles, date_col = "Date_LT", depth_col = "Depths", interval = "day")
+interpolated_temps <- interpolateDates(temp_profiles, time_col = "Date_LT", depth_col = "Depths", interval = "day")
 }
