@@ -17,7 +17,7 @@ keepFish(df, fish_col, fishnames)
 A data frame that only contains detections that match a known ID
 }
 \description{
-Filters detection data frame to include only those that match known IDs
+Filters detection data frame to include only those that match known IDs and prints (in console) lists of unmatched fish.
 }
 \examples{
 matched_detects <- keepFish(vr2_detects, fish_col = "FishID", fishnames = fish_surgery$FishID)
