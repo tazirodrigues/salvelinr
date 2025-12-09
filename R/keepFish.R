@@ -1,6 +1,6 @@
 #' @title keepFish
 #'
-#' @description Filters detection data frame to include only those that match known IDs
+#' @description Filters detection data frame to include only those that match known IDs and prints (in console) lists of unmatched fish.
 #'
 #' @param df A data frame object
 #' @param fish_col The name (in quotes) of the column that contains individual animal IDs
@@ -16,8 +16,8 @@ keepFish <- function(df, fish_col, fishnames) {
 
   if(class(df[[fish_col]]) != class(fishnames)) { stop("Both fish lists must be of the same class.") }
 
-  notmatched <- df[[fish_col]][!(df[[fish_col]] %in% fishnames)]
-  notfound <- fishnames[!(fishnames %in% df[[fish_col]])]
+  notmatched <- unique(df[[fish_col]][!(df[[fish_col]] %in% fishnames)])
+  notfound <- unique(fishnames[!(fishnames %in% df[[fish_col]])])
 
   df <- dplyr::filter(df, df[[fish_col]] %in% fishnames)
 
