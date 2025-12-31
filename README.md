@@ -25,6 +25,7 @@ It's very likely that these detections are in UTC time, but to make them meaning
 At this point you likely want to take a quick look at the data. These functions are related to data examination:
 
 - `diagnose` creates a patchwork plot of number of detections over time, including number of fish over time. If `sensor == TRUE` it will include plots of mean sensor values and number of sensor readings - be sure to specify which column has the sensor types if working with two or more of them.
+- *coming soon* `depthlengths` takes a timeseries of sensor values and calculates, fish-wise, the successive differences in sensor values and times. This is intended to be used with depth data as a first step towards looking at vertical movement patterns.
 
 ### Environmental Data: 
 You may have temperature data to work with as well. The following functions will linearly interpolate them along depth and date axes.
