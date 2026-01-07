@@ -9,7 +9,8 @@ depthlengths(
   fish_col,
   time_col = "DateTime_LT",
   depth_col,
-  skip.na = FALSE
+  skip.na = FALSE,
+  drop = FALSE
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ depthlengths(
 \item{depth_col}{Column with depth values}
 
 \item{skip.na}{Boolean value for whether to skip NA values. Defaults to FALSE: if the number of NA depths is > 1, function will stop.}
+
+\item{drop}{Boolean value for whether to drop all non-relevant columns. If drop == TRUE, the returned df will only include fish_col, time_col, depth_col, diffdepth, and diffsecs.}
 }
 \value{
 Adds diffsecs and diffdepth columns to original dataframe

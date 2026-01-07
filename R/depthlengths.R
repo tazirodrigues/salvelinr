@@ -7,6 +7,7 @@
 #' @param time_col Column with timestamps. Defaults to "DateTime_LT"
 #' @param depth_col Column with depth values
 #' @param skip.na Boolean value for whether to skip NA values. Defaults to FALSE: if the number of NA depths is > 1, function will stop.
+#' @param drop Boolean value for whether to drop all non-relevant columns. If drop == TRUE, the returned df will only include fish_col, time_col, depth_col, diffdepth, and diffsecs.
 #'
 #' @return Adds diffsecs and diffdepth columns to original dataframe
 #' @examples
@@ -14,7 +15,8 @@
 #' @export
 #' @importFrom
 
-depthlengths <- function(df, fish_col, time_col = "DateTime_LT", depth_col, skip.na = FALSE) {
+depthlengths <- function(df, fish_col, time_col = "DateTime_LT", depth_col,
+                         skip.na = FALSE, drop = FALSE) {
 
   full_df <- data.frame()
 
@@ -24,6 +26,8 @@ depthlengths <- function(df, fish_col, time_col = "DateTime_LT", depth_col, skip
     print("Depth column converted to numeric.")
 
   }
+
+  if(drop == TRUE) { df <- df[, c(fish_col, time_col, depth_col)] }
 
   for(i in 1:length(unique(df[[fish_col]]))) {
 
