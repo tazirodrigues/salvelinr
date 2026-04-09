@@ -27,7 +27,7 @@ readDetectsFolder <- function(foldername) {
 
   }
 
-  df <- ldf %>% purrr::map_df(~.); rm(ldf, ndf)
+  df <- ndf %>% purrr::map_df(~.); rm(ldf, ndf)
 
   print("Note: all columns returned as characters.")
 
