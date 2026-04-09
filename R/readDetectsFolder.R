@@ -17,7 +17,17 @@ readDetectsFolder <- function(foldername) {
   filenames <- list.files(foldername, pattern = "\\.csv$", full.names = TRUE) # take all files ending in csv
   ldf <- lapply(filenames, read.csv) # apply read.csv to the whole list
 
-  df <- ldf %>% purrr::map_df(~.); rm(ldf)
+  ## convert all columns to character to avoid clashes
+
+  for(i in 1:length(filenames)) {
+
+    ndf[[i]] <- as.data.frame(lapply(ldf[[i]], as.character))
+
+  }
+
+  df <- ldf %>% purrr::map_df(~.); rm(ldf, ndf)
+
+  print("Note: all columns returned as characters.")
 
   return(df)
 
