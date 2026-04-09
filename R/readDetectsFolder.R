@@ -19,6 +19,8 @@ readDetectsFolder <- function(foldername) {
 
   ## convert all columns to character to avoid clashes
 
+  ndf <- list()
+
   for(i in 1:length(filenames)) {
 
     ndf[[i]] <- as.data.frame(lapply(ldf[[i]], as.character))
