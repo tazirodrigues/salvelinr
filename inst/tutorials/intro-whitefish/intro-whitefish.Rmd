@@ -99,7 +99,22 @@ telem_data <- telem_data %>%
 
 ```
 
-Make sure you converted variables as necessary before proceeding!
+<div id="number_rows-hint">
+**Hint:** Remember that the data frame (df for short) with telemetry data is called "telem_data." 
+</div>
+
+```{r quiz, echo=FALSE}
+
+question("How many different individuals are in the data set?",
+  answer(50, message = "Try unique() to find the number of fish."),
+  answer(20000, message = "There are 20000 rows in the data set. Try unique() for the number of fish."),
+  answer(5, correct = TRUE),
+  answer(25, message = "Try unique() to find the number of fish."),
+  random_answer_order = TRUE,
+  allow_retry = TRUE
+)
+
+```
 
 ## Depth distributions
 
@@ -203,7 +218,7 @@ for(i in 1:length(unique(telem_data$FishID))) {
 
 ## Speed by body length
 
-Calculate the average speed each fish is moving per day, in body lengths per second.
+Calculate the average speed each fish is moving per day, in body lengths per minute. Here, we will use fork length ("FL") as the body length. 
 
 ```{r avg-speed, exercise = TRUE}
 
@@ -215,5 +230,5 @@ telem_data <- merge(telem_data, surgery_data,
 ```
 
 <div id="avg-speed-hint">
-**Hint:** You can use the code you wrote in the last chunk or the function `salvelinr::depthlengths` to calculate distances traveled. 
+**Hint:** You can use the code you wrote in the last chunk or the function `salvelinr::depthlengths` to calculate distances traveled. Try ?salvelinr::depthlengths() for more about this function.
 </div>
