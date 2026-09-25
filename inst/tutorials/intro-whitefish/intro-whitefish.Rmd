@@ -1,0 +1,219 @@
+---
+title: "Telemetry Practice Questions"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+# Synthetic Whitefish Data - Practice Problems
+
+```{r setup, include=FALSE}
+
+library(learnr)
+library(purrr)
+
+knitr::opts_chunk$set(echo = FALSE)
+
+## generate some data
+
+telem_data <- data.frame(FishID = character(20000),
+                        DateTime_UTC = character(20000),
+                        Depth = character(20000))
+  
+telem_data$FishID <- purrr::map_chr(sample(c("LW1", "LW2", "LW3", "LW4", "LW5"), 
+                                          20000, replace = TRUE), as.character)
+telem_data$DateTime_UTC <- as.character(sample(seq(from = as.POSIXct("2025-04-02 00:00:00", "%Y-%m-%d %H:%M:%S"),
+                                             to = as.POSIXct("2025-10-22 23:59:59", "%Y-%m-%d %H:%M:%S"),
+                                             length.out = 20000)))
+
+## data increasing in depth
+
+x <- runif(20000, 0, 25)
+y <- 5*x + rnorm(20000, 14, 25)
+
+lm <- as.data.frame(cbind(x,y))
+lm <- dplyr::arrange(lm, x)
+
+telem_data <- telem_data %>% dplyr::arrange(DateTime_UTC)
+telem_data$Depth <- lm$y
+
+## surgery data
+
+surgery_data <- data.frame(FishID = c("LW1", "LW2", "LW3", "LW4", "LW5"),
+                           Surg_Start = c("2025-04-01 13:22:09", "2025-04-01 14:52:20",
+                                          "2024-05-24 08:52:49", "2024-05-25 13:55:39",
+                                          "2025-03-29 10:39:35"),
+                           Mass = c(795, 840, 682, 853, 598),
+                           FL = c(514, 629, 593, 635, 480))
+
+```
+
+## Introduction
+
+This file works through practice problems related to acoustic telemetry data with a pressure (depth) sensor. For the purposes of these exercises, we will work with synthetic data, which are generated in the background of this tutorial. 
+
+We have two data files in this tutorial: "telem_data," which includes 800 observations of lake whitefish, and "surgery_data," which has information about the fish that was collected at the time of the surgery.
+
+## Read in data
+
+Normally we would start a script by reading in files and packages that we need. For the purposes of this tutorial, think about packages that might be helpful.
+
+A package is a group of functions. One important function is **`library()`**, which is how we read in packages. The function `library()` usually takes one explicit *argument*, which is the name of the library that we want to read in. However, there are other optional arguments you can include, as well as some that are included implicitly. You can find a list of these by running `?library()`.
+
+```{r read, exercise = TRUE, exercise.lines = 5}
+
+## libraries
+
+library(tidyverse) ## add any other libraries needed; use install.packages() if a library is missing from your computer
+
+```
+
+## Investigating data
+
+To start, let's look at the data overall. How many detections are there? What class is each variable?
+
+If any variables are not right - for example, a value that should be a number is being treated as a character - we can change them here before proceeding. Here's a [date-time resource](https://www.stat.berkeley.edu/~s133/dates.html) that explains some aspects of these data types.
+
+```{r number_rows, exercise = TRUE}
+
+## number of rows
+
+## types of variables
+
+```
+
+```{r number_rows-solution}
+
+## number of rows
+
+nrow(telem_data)
+
+## types of variables
+
+str(telem_data)
+
+## let's change DateTime to POSIX and FishID to factor
+
+telem_data <- telem_data %>%
+  dplyr::mutate(DateTime_UTC = as.POSIXct(DateTime_UTC, "%Y-%m-%d %H:%M:%S"),
+                FishID = as.factor(FishID))
+
+```
+
+Make sure you converted variables as necessary before proceeding!
+
+## Depth distributions
+
+Create a histogram of depth readings to look at the distribution of depths occupied by lake whitefish. You may want to change the labels, colours, font size, etc.
+
+For ideas, this [ggplot cheat sheet](https://rstudio.github.io/cheatsheets/html/data-visualization.html) may be helpful.
+
+```{r histo, exercise = TRUE, exercise.eval = TRUE}
+
+```
+
+```{r histo-hint}
+
+ggplot() +
+  geom_histogram()
+
+```
+
+## Daily mean depths
+
+Calculate the daily mean depth, first considering all fish together and then calculating for each individual. Plot these data with mean daily depth in response to date (or time).
+
+For examples of one approach to this, here is a [tidyverse cheat sheet](https://users.encs.concordia.ca/~gregb/home/PDF/R-Tidyverse-Cheat-Sheet.pdf).
+
+```{r meandepths, exercise = TRUE}
+
+
+```
+
+```{r meandepths-hint}
+
+telem_data %>%
+  group_by(Date_LT) %>%
+  summarise(meandepth = yourfxhere())
+
+```
+
+## Vertical distances
+
+How far does each fish travel vertically each day? Report the mean, minimum, and maximum daily distances traveled across all fish and all days.
+
+```{r vertdist, exercise = TRUE, exercise = TRUE}
+
+
+```
+
+```{r vertdist-hint-1}
+
+for(i in 1:length(unique(telem_data$FishID))) {
+  
+  df <- filter(telem_data, FishID == unique(telem_data$FishID)[i])
+  
+  
+  
+}
+
+```
+
+```{r vertdist-hint-2}
+
+vert_dist <- data.frame()
+
+for(i in 1:length(unique(telem_data$FishID))) {
+  
+  df <- filter(telem_data, FishID == unique(telem_data$FishID)[i])
+  
+  ## more code here
+  
+  ## and then return it:
+  
+  vert_dist <- rbind(vert_dist, df)
+  
+}
+
+```
+
+```{r vertdist-solution}
+
+vert_dist <- data.frame()
+
+for(i in 1:length(unique(telem_data$FishID))) {
+  
+  df <- filter(telem_data, FishID == unique(telem_data$FishID)[i])
+  
+  ## calculate vertical distances
+  
+  df <- df %>%
+    arrange(DateTime_UTC) %>%
+    mutate(vertdiff = c(NA, diff(Depth)),
+           Date_UTC = as.Date(DateTime_UTC))
+  
+  ## and then return it:
+  
+  vert_dist <- rbind(vert_dist, df)
+  
+}
+
+## now just group by date and fish and sum!
+
+```
+
+## Speed by body length
+
+Calculate the average speed each fish is moving per day, in body lengths per second.
+
+```{r avg-speed, exercise = TRUE}
+
+## first we will need to merge with the surgery data
+
+telem_data <- merge(telem_data, surgery_data, 
+                    by = "FishID", all = TRUE)
+
+```
+
+<div id="avg-speed-hint">
+**Hint:** You can use the code you wrote in the last chunk or the function `salvelinr::depthlengths` to calculate distances traveled. 
+</div>
