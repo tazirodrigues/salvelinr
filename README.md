@@ -6,7 +6,7 @@
 
 **`salvelinr`** is a collection of accumulated functions I've written and reused over the past few years of working with positional telemetry data, particularly on charr (hence the name) in small boreal lakes. The main motivation for packaging them up is so that they can easily be used by other lab members (and me as I move between projects). Below, I give an overview of a sample workflow that I anticipate someone working through after receiving VR2 files and temperature strings. 
 
-### **NEW!** :tada: *September 25, 2026* 
+### **NEW!** :tada: *September 2026* 
 
 I have put together a short tutorial to walk through a few basic telemetry tasks with depth readings. To run it, install the package `learnr` and run the following code:
 `learnr::run_tutorial(name = "intro-whitefish", package = "salvelinr")`. 
