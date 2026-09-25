@@ -6,6 +6,13 @@
 
 **`salvelinr`** is a collection of accumulated functions I've written and reused over the past few years of working with positional telemetry data, particularly on charr (hence the name) in small boreal lakes. The main motivation for packaging them up is so that they can easily be used by other lab members (and me as I move between projects). Below, I give an overview of a sample workflow that I anticipate someone working through after receiving VR2 files and temperature strings. 
 
+### **NEW!** :tada: *September 2026* 
+
+I have put together a short tutorial to walk through a few basic telemetry tasks with depth readings. To run it, install the package `learnr` and run the following code:
+`learnr::run_tutorial(name = "intro-whitefish", package = "salvelinr")`. 
+
+A tutorial to walk through the functions from `salvelinr` more specifically may come soon!
+
 ## Example workflow
 ### Step 1: 
 You acquire a folder of detection .csv files. If they are from discrete receivers, this may be a very large folder with many different files that all need to be treated the same way. Depending on the scope of your study, positional (e.g., VPS) data may be similar, but they might also just need one simple line of code to read in: `read.csv("VPS Results 20251015.csv")`. Let's proceed assuming you have a large folder of files that need the same processing pipeline. The following functions could be useful:
