@@ -32,3 +32,10 @@ You may have temperature data to work with as well. The following functions will
 
 - `interpolateDepths` should be used first, if both are to be used. It will linearly interpolate down each day's profile to fill in missing values at the given interval. I use this to get temps for every 0.1 m from meter-wise depth profiles. If you write `sinkends == TRUE` it will always give you a value for the very top and bottom of the lake, even if there are no data to support it.
 - `interpolateDates` can be used next. It does the same thing, but along the date axis - linearly interpolates to fill in the values.
+
+**NEW!** 
+
+I have put together a short tutorial to walk through a few basic telemetry tasks with depth readings. To run it, install the package `learnr` and run the following code:
+`learnr::run_tutorial(name = "intro-whitefish", package = "salvelinr")`
+
+A tutorial to walk through the functions from `salvelinr` more specifically may come soon!
