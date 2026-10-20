@@ -6,18 +6,12 @@
 
 **`salvelinr`** is a collection of accumulated functions I've written and reused over the past few years of working with positional telemetry data, particularly on charr (hence the name) in small boreal lakes. The main motivation for packaging them up is so that they can easily be used by other lab members (and me as I move between projects). Below, I give an overview of a sample workflow that I anticipate someone working through after receiving VR2 files and temperature strings. 
 
-### **NEW!** :tada: *September 2026* 
-
-I have put together a short tutorial to walk through a few basic telemetry tasks with depth readings. To run it, install the package `learnr` and run the following code:
-`learnr::run_tutorial(name = "intro-whitefish", package = "salvelinr")`. 
-
-A tutorial to walk through the functions from `salvelinr` more specifically may come soon!
-
 ## Example workflow
 ### Step 1: 
 You acquire a folder of detection .csv files. If they are from discrete receivers, this may be a very large folder with many different files that all need to be treated the same way. Depending on the scope of your study, positional (e.g., VPS) data may be similar, but they might also just need one simple line of code to read in: `read.csv("VPS Results 20251015.csv")`. Let's proceed assuming you have a large folder of files that need the same processing pipeline. The following functions could be useful:
 
-- `readDetectsFolder` takes the path to your folder of detection files and reads them all in, storing them all together in one long data frame. **As of April 2026, it will return all columns as characters.** This change is intended to reduce issues when columns are empty. However, all detection files must have the same number of columns, with the same names.
+- `readDetectsFolder` takes the path to your folder of detection files and reads them all in, storing them all together in one long data frame.
+- `readVdatFolder` does the same as `readDetectsFolder` but uses `glatos::vdat_convert` to read in VDAT files from Innovasea systems.
 - `keepFish` will filter for the IDs that you want to keep. Typically, this will be IDs that you know are in the system - especially in a small contained lake where you know all the other researchers, and likely will not encounter tagged fish you haven't heard of. In the console, it will list all IDs that were in metadata or detection files and *not* matched.
 - `deduplicate` removes detections that are within the minimum interval identified in the tag specs. This is likely to *substantially* cut down on the number of detections in your file, so I recommend doing this as soon as possible so that the rest of the code is faster and doesn't bring all the extra detections along. This function defaults to doing this like a "hammer" - which is to say by remvoing anything within the min interval of another detection - but if you have the computing power, specifying the type as "spear" will make it more precise and return more valid detections.
 
@@ -32,10 +26,24 @@ It's very likely that these detections are in UTC time, but to make them meaning
 At this point you likely want to take a quick look at the data. These functions are related to data examination:
 
 - `diagnose` creates a patchwork plot of number of detections over time, including number of fish over time. If `sensor == TRUE` it will include plots of mean sensor values and number of sensor readings - be sure to specify which column has the sensor types if working with two or more of them.
-- *coming soon* `depthlengths` takes a timeseries of sensor values and calculates, fish-wise, the successive differences in sensor values and times. This is intended to be used with depth data as a first step towards looking at vertical movement patterns.
+
+### Step 4:
+There are some calculations that I often do per-fish, particularly related to movement. These functions loop through dataframes to do this:
+
+- `depthlengths` takes a timeseries of sensor values and calculates, fish-wise, the successive differences in sensor values and times. This is intended to be used with depth data as a first step towards looking at vertical movement patterns.
+- `steplengths` calculates lateral steps by longitude and latitude for each fish, using `geodist.` 
 
 ### Environmental Data: 
 You may have temperature data to work with as well. The following functions will linearly interpolate them along depth and date axes.
 
 - `interpolateDepths` should be used first, if both are to be used. It will linearly interpolate down each day's profile to fill in missing values at the given interval. I use this to get temps for every 0.1 m from meter-wise depth profiles. If you write `sinkends == TRUE` it will always give you a value for the very top and bottom of the lake, even if there are no data to support it.
 - `interpolateDates` can be used next. It does the same thing, but along the date axis - linearly interpolates to fill in the values.
+
+## Update Log
+
+October 2026: `readVdatFolder` uploaded. 
+September 2026: Basic tutorial for working through depth data uploaded. Install by running the following code: `learnr::run_tutorial(name = "intro-whitefish", package = "salvelinr")`.
+June 2026: `steplengths` uploaded.
+April 2026:  `readDetectsFolder` modified to return all columns as characters. This change is intended to reduce issues when columns are empty. However, all detection files must have the same number of columns, with the same names.
+January 2026: `depthlengths` uploaded.
+November 2025: Package created.
