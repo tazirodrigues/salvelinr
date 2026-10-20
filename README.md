@@ -41,9 +41,9 @@ You may have temperature data to work with as well. The following functions will
 
 ## Update Log
 
-October 2026: `readVdatFolder` uploaded. 
-September 2026: Basic tutorial for working through depth data uploaded. Install by running the following code: `learnr::run_tutorial(name = "intro-whitefish", package = "salvelinr")`.
-June 2026: `steplengths` uploaded.
-April 2026:  `readDetectsFolder` modified to return all columns as characters. This change is intended to reduce issues when columns are empty. However, all detection files must have the same number of columns, with the same names.
-January 2026: `depthlengths` uploaded.
-November 2025: Package created.
+- October 2026: `readVdatFolder` uploaded. 📖
+- September 2026: Basic tutorial for working through depth data uploaded. Install by running the following code: `learnr::run_tutorial(name = "intro-whitefish", package = "salvelinr")`. 🐠
+- June 2026: `steplengths` uploaded. 🗺️
+- April 2026:  `readDetectsFolder` modified to return all columns as characters. This change is intended to reduce issues when columns are empty. However, all detection files must have the same number of columns, with the same names. 🔨
+- January 2026: `depthlengths` uploaded. 🏊
+- November 2025: Package created.
