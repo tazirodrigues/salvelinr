@@ -30,7 +30,7 @@ readVdatFolder <- function(wd, data_type) {
                        ".csv-fathom-split", sep = "") ## replace vdat with .csv-fathom-split
     setwd(paste(wd, newfolder, sep = "/"))
 
-    detects <- read.csv(data_type, sip = 2) ## first two rows of VDAT-gen CSVs are not readable
+    detects <- read.csv(data_type, skip = 2) ## first two rows of VDAT-gen CSVs are not readable
     all_detects <- rbind(all_detects, detects)
 
   }
