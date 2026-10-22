@@ -21,10 +21,10 @@ steplengths <- function(df, fish_col, time_col) {
     ndf <- filter(df, df[[fish_col]] == unique(df[[fish_col]])[i])
     nf <- arrange(ndf, time_col)
 
-    ndf$distance_between_points <- geodist::geodist(x = ndf[, c("Longitude", "Latitude")],
+    nf$distance_between_points <- geodist::geodist(x = nf[, c("Longitude", "Latitude")],
                                                     sequential = TRUE, measure = "haversine", pad = TRUE)
 
-    dist_df <- rbind(dist_df, ndf)
+    dist_df <- rbind(dist_df, nf)
 
   }
 
