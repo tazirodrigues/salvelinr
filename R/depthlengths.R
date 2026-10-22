@@ -32,7 +32,7 @@ depthlengths <- function(df, fish_col, time_col = "DateTime_LT", depth_col,
   for(i in 1:length(unique(df[[fish_col]]))) {
 
     fish_df <- filter(df, df[[fish_col]] == unique(df[[fish_col]])[i])
-    fish_df <- arrange(fish_df, time_col)
+    fish_df <- arrange(fish_df, fish_df[[time_col]])
 
     # if(sum(is.na(fish_df[[depth_col]])) > 1 & skip.na == FALSE) { stop("There are more than 1 instances of NA in the depth_col for at least 1 fish. You may choose to skip NAs (skip.na = TRUE) or otherwise choose how to deal with NAs before resubmitting to the function.")}
     # if(sum(is.na(fish_df[[depth_col]])) > 1 & skip.na == TRUE) {
